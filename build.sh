@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit on build errors
+set -e
+
 for i in $(find . -type d)
 do
     # Iterate over every folder
