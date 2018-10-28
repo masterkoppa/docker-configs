@@ -1,0 +1,5 @@
+# Avoid commiting the site files
+html/*
+
+# But keep the folder itself on git
+!html/.gitkeep

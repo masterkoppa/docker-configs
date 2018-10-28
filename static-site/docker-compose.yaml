@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+    personal-web:
+        image: nginx:alpine
+        volumes:
+            - ./html:/usr/share/nginx/html/
+        environment:
+            VIRTUAL_HOST: "${HOST_NAMES}"
+            LETSENCRYPT_HOST: "${HOST_NAMES}"
+            LETSENCRYPT_EMAIL: "${LETS_ENCRYPT_EMAIL}"
+
+networks:
+    default:
+        external:
+            name: webproxy
