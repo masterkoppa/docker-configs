@@ -4,4 +4,9 @@ language: bash
 services:
   - docker
 
+# Create empty .env files to prevent failures, any needed
+# enviromental variables will be injected directly
+before_install:
+  - touch plex-reverse-proxy/.env
+
 script: ./build.sh

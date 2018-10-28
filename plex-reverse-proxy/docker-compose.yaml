@@ -1,0 +1,14 @@
+version: '3.0'
+
+services:
+    plex-reverse:
+        build: .
+        environment:
+            VIRTUAL_HOST: "${HOST_NAMES}"
+            LETSENCRYPT_HOST: "${HOST_NAMES}"
+            LETSENCRYPT_EMAIL: "${LETS_ENCRYPT_EMAIL}"
+
+networks:
+    default:
+        external:
+            name: webproxy
