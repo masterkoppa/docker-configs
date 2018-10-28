@@ -1,0 +1,5 @@
+# Avoid commiting the data files (like certs)
+data/*
+
+# But keep the folder itself on git
+!data/.gitkeep
