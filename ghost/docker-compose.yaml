@@ -1,0 +1,38 @@
+
+version: '3'
+
+services:
+    ghost:
+        image: ghost:2-alpine
+        restart: always
+        environment:
+            # see https://docs.ghost.org/docs/config#section-running-ghost-with-config-env-variables
+            database__client: mysql
+            database__connection__host: db
+            database__connection__user: root
+            database__connection__password: "$DATABASE_PASSWORD"
+            database__connection__database: ghost
+            mail__transport: SMTP
+            mail__options__service: Mailgun
+            mail__options__auth__user: "$MAILGUN_USERNAME"
+            mail__options__auth__pass: "$MAILGUN_PASSWORD"
+            NODE_ENV: production
+            url: "$GHOST_URL"
+            VIRTUAL_HOST: "$HOST_NAMES"
+            LETSENCRYPT_HOST: "$HOST_NAMES"
+            LETSENCRYPT_EMAIL: "$LETS_ENCRYPT_EMAIL"
+        volumes:
+            - ./ghost-drive:/var/lib/ghost/content
+
+    db:
+        image: mysql:5.7
+        restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: "$DATABASE_PASSWORD"
+        volumes:
+            - ./mysql-drive:/var/lib/mysql
+
+networks:
+    default:
+        external:
+            name: webproxy
