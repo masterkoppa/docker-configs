@@ -1,0 +1,53 @@
+version: '3'
+
+services:
+  nextcloud_db:
+    image: postgres:alpine
+    restart: always
+    volumes:
+      - ./db_data:/var/lib/postgresql/data
+    env_file:
+      - db.env
+
+  nextcloud_redis:
+    image: redis:alpine
+    restart: always
+
+  nextcloud_app:
+    build: ./app
+    restart: always
+    volumes:
+      - ./data:/var/www/html
+    environment:
+      - POSTGRES_HOST=nextcloud_db
+      - POSTGRES_DB=nextcloud
+    env_file:
+      - db.env
+    depends_on:
+      - nextcloud_db
+      - nextcloud_redis
+
+  nextcloud_web:
+    build: ./web
+    restart: always
+    volumes:
+      - ./data:/var/www/html:ro
+    env_file:
+      - web.env
+    depends_on:
+      - nextcloud_app
+
+  cron:
+    build: ./app
+    restart: always
+    volumes:
+      - ./data:/var/www/html
+    entrypoint: /cron.sh
+    depends_on:
+      - nextcloud_db
+      - nextcloud_redis
+
+networks:
+  default:
+    external:
+      name: webproxy

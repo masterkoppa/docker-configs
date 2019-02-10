@@ -8,5 +8,6 @@ services:
 # enviromental variables will be injected directly
 before_install:
   - touch plex-reverse-proxy/.env
+  - touch nextcloud/{db,web}.env
 
 script: ./build.sh
