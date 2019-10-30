@@ -1,0 +1,22 @@
+version: "3"  
+services:  
+    jellyfin:
+      restart: always
+      container_name: JellyFin
+      image: jellyfin/jellyfin  
+      expose:
+        - 8096
+      volumes:  
+        - ./config:/config  
+        - ./cache:/cache  
+        - ./media:/media:ro
+      devices:
+        - /dev/dri/renderD128:/dev/dri/renderD128
+      environment:
+        - TZ=America/New_York
+      networks:
+        - web
+networks:
+  web:
+    external: true
+
